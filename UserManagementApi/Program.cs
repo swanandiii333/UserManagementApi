@@ -7,6 +7,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.Use(async (context, next) =>
+{
+    Console.WriteLine(
+        $"Request: {context.Request.Method} {context.Request.Path}"
+    );
+
+    await next();
+});
 
 // Configure Swagger for development
 if (app.Environment.IsDevelopment())
