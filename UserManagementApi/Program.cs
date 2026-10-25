@@ -1,0 +1,34 @@
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Register services
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure Swagger for development
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
+app.Use(async (context, next) =>
+{
+    Console.WriteLine(
+        $"Request: {context.Request.Method} {context.Request.Path}"
+    );
+
+    await next();
+});
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
